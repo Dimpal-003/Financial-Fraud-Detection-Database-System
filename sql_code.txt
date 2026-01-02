@@ -1,0 +1,80 @@
+1️⃣ Customer Table
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+2️⃣ Account Table
+CREATE TABLE Account (
+    account_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    account_type VARCHAR(50),
+    balance DECIMAL(12,2),
+    status VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+3️⃣ Transaction Table
+CREATE TABLE Transaction (
+    transaction_id INT PRIMARY KEY AUTO_INCREMENT,
+    account_id INT,
+    amount DECIMAL(12,2),
+    transaction_type VARCHAR(50),
+    transaction_date TIMESTAMP,
+    status VARCHAR(20),
+    FOREIGN KEY (account_id) REFERENCES Account(account_id)
+);
+
+4️⃣ Device Table
+CREATE TABLE Device (
+    device_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    device_type VARCHAR(50),
+    ip_address VARCHAR(50),
+    os VARCHAR(50),
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+5️⃣ FraudAlert Table
+CREATE TABLE FraudAlert (
+    alert_id INT PRIMARY KEY AUTO_INCREMENT,
+    transaction_id INT,
+    alert_type VARCHAR(100),
+    risk_level VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (transaction_id) REFERENCES Transaction(transaction_id)
+);
+
+6️⃣ LoginHistory Table
+CREATE TABLE LoginHistory (
+    login_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    login_time TIMESTAMP,
+    ip_address VARCHAR(50),
+    status VARCHAR(20),
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+7️⃣ TransactionLocation Table
+CREATE TABLE TransactionLocation (
+    location_id INT PRIMARY KEY AUTO_INCREMENT,
+    transaction_id INT,
+    city VARCHAR(50),
+    state VARCHAR(50),
+    country VARCHAR(50),
+    FOREIGN KEY (transaction_id) REFERENCES Transaction(transaction_id)
+);
+
+8️⃣ BlacklistedEntities Table
+CREATE TABLE BlacklistedEntities (
+    blacklist_id INT PRIMARY KEY AUTO_INCREMENT,
+    entity_type VARCHAR(50),
+    entity_value VARCHAR(100),
+    reason TEXT,
+    blacklisted_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
